@@ -1,0 +1,9 @@
+{
+    "name": "lunchify-api",
+    "version": "0.0.1",
+    "dependencies": {
+        "express": "^4.13.0",
+        "mongoose": "^4.0.6",
+        "body-parser": "^1.13.1"
+    }
+}
