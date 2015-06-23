@@ -57,7 +57,7 @@
         .get(function(req, res) {
             // Calculate the date
             var t = new Date(),
-                d = (req.params.date) ? req.params.date : [t.getFullYear(), t.getMonth() + 1, t.getDate()].join('-');
+                d = req.params.date || [t.getFullYear(), t.getMonth() + 1, t.getDate()].join('-');
 
             // Find the menu
             Menu.findOne({
@@ -73,6 +73,22 @@
 
                     res.json(menu);
                 });
+        })
+
+        /* create a new menu */
+        .post(function(req, res) {
+            var date = req.params.date ? new Date(req.params.date) : new Date();
+
+            Venue.findOne({_id: req.params.venue_id}, function(err, venue) {
+                var menu = new Menu({
+                    date: date,
+                    _venue: venue
+                });
+
+                menu.save(function() {
+                    res.json({sucess: true});
+                });
+            });
         });
 
     // REGISTER OUR ROUTES -------------------------------
