@@ -22,7 +22,6 @@
     var Meal      = require('./app/models/meal');
     var Menu      = require('./app/models/menu');
 
-
     // ROUTES FOR OUR API
     // =============================================================================
     /* configure app to use bodyParser() */
@@ -52,14 +51,21 @@
         });
 
     /* single venue */
-    router.route('/venues/:venue_id')
+    router.route('/venues/:venue_id/:date?')
 
         /* get venues menu */
         .get(function(req, res) {
+            // Calculate the date
+            var t = new Date(),
+                d = (req.params.date) ? req.params.date : [t.getFullYear(), t.getMonth() + 1, t.getDate()].join('-');
 
-            Menu.findOne({_venue: req.params.venue_id})
+            // Find the menu
+            Menu.findOne({
+                _venue: req.params.venue_id,
+                date: {$gte: new Date(d)}
+            })
                 .populate('_venue')
-                .populate('_meals')
+                .populate('meals')
                 .exec(function(err, menu) {
                     if (err) {
                         res.send(err);

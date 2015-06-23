@@ -9,9 +9,6 @@
 
     /* schema */
     var MealSchema = new Schema({
-        _id: Schema.Types.ObjectId,
-        _menu: {type: Schema.Types.ObjectId, ref: 'Menu'},
-        _venue: {type: Schema.Types.ObjectId, ref: 'Venue'},
         name: String,
         name_alt: String
     });
