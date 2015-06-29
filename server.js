@@ -7,20 +7,20 @@
 
     // INCLUDE WHAT WE NEED
     // =============================================================================
-    var express    = require('express');        // call express
-    var app        = express();                 // define our app using express
-    var bodyParser = require('body-parser');
-
-    // DATABASE
-    // =============================================================================
-    var mongoose   = require('mongoose');
-    mongoose.connect('mongodb://localhost/lunchify'); // connect to our database
+    var express    = require('express'),
+        app        = express(),
+        bodyParser = require('body-parser'),
+        util       = require('util'),
+        mongoose   = require('mongoose');
 
     // BASE SETUP
     // =============================================================================
-    var Venue     = require('./app/models/venue');
-    var Meal      = require('./app/models/meal');
-    var Menu      = require('./app/models/menu');
+    var Venue      = require('./app/models/venue'),
+        Meal       = require('./app/models/meal'),
+        Menu       = require('./app/models/menu');
+
+    /* Connect to Mongoose */
+    mongoose.connect('mongodb://localhost/lunchify');
 
     // ROUTES FOR OUR API
     // =============================================================================
@@ -37,17 +37,58 @@
     });
 
     /* all venues */
-    router.route('/venues')
+    router.route('/venues/:coords?')
 
         /* Get the list of venues */
         .get(function(req, res) {
-            Venue.find(function(err, venues) {
-                if (err) {
+            var condition = {},
+                coords    = [];
+
+            // If coords are set
+            if(req.params.coords) {
+                coords = req.params.coords.split(',');
+                coords.reverse();
+
+                // Set Conditions
+                condition = {
+                    location: {
+                        $near: {
+                            $geometry: {
+                                type: "Point",
+                                coordinates: coords
+                            },
+                            $minDistance: 0,
+                            $maxDistance: 2000
+                        }
+                    }
+                };
+            }
+
+            // Find the Venue
+            Venue.find(condition, function(err, venues) {
+                if(err) {
                     res.send(err);
                 }
 
                 res.json(venues);
             });
+        })
+
+        /* Save a new venue */
+        .post(function(req, res) {
+            if(util.isArray(req.body)) {
+                req.body.forEach(function(item) {
+                    var venue = new Venue(item);
+                    venue.save();
+                });
+                res.json({success: true});
+            }
+            else {
+                var venue = new Venue(req.body);
+                venue.save(function() {
+                    res.json(venue);
+                });
+            }
         });
 
     /* single venue */
@@ -86,7 +127,27 @@
                 });
 
                 menu.save(function() {
-                    res.json({sucess: true});
+                    res.json(menu);
+                });
+            });
+        });
+
+    /* single menu */
+    router.route('/menus/:menu_id')
+
+        /* Save new meals */
+        .post(function(req, res) {
+            Menu.findOne({_id: req.params.menu_id}, function(err, menu) {
+                var meal = new Meal({
+                    name: req.body.name,
+                    name_alt: req.body.name_alt,
+                });
+
+                meal.save(function() {
+                    menu.meals.push(meal);
+                    menu.save(function() {
+                        res.json(meal);
+                    });
                 });
             });
         });

@@ -9,14 +9,15 @@
 
     /* schema */
     var VenueSchema = new Schema({
-        _id: Schema.Types.ObjectId,
         address: String,
-        lat: Number,
-        lng: Number,
+        location: {type: [Number], index: '2dsphere'},
         link: String,
         name: String,
         simple_name: String
     });
+
+    /* index */
+    VenueSchema.index({location: '2dsphere'});
 
     /* export */
     module.exports = mongoose.model('Venue', VenueSchema);
