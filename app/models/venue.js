@@ -9,6 +9,7 @@
 
     /* schema */
     var VenueSchema = new Schema({
+        _id: Schema.Types.ObjectId,
         address: String,
         location: {type: [Number], index: '2dsphere'},
         link: String,

@@ -103,15 +103,14 @@
             // Find the menu
             Menu.findOne({
                 _venue: req.params.venue_id,
-                date: {$gte: new Date(d)}
+                date: {$gte: new Date(d), $lte: new Date(d)}
             })
                 .populate('_venue')
-                .populate('meals')
+                .populate({path: 'meals', options: {sort: {'order': 1}} })
                 .exec(function(err, menu) {
                     if (err) {
                         res.send(err);
                     }
-
                     res.json(menu);
                 });
         })
@@ -138,17 +137,36 @@
         /* Save new meals */
         .post(function(req, res) {
             Menu.findOne({_id: req.params.menu_id}, function(err, menu) {
-                var meal = new Meal({
-                    name: req.body.name,
-                    name_alt: req.body.name_alt,
-                });
+                if(err) {
+                    res.send(err);
+                }
 
-                meal.save(function() {
-                    menu.meals.push(meal);
-                    menu.save(function() {
-                        res.json(meal);
+                var meals = req.body,
+                    saved = 0, i = 0;
+
+                if(meals.length) {
+                    meals.forEach(function(m) {
+
+                        var meal = new Meal({
+                            name: m.name,
+                            name_alt: m.name_fi,
+                            order: i++
+                        });
+
+                        meal.save(function() {
+                            saved++;
+                            menu.meals.push(meal);
+
+                            if(saved === meals.length) {
+                                menu.save(function() {
+                                    res.json({success: true});
+                                });
+                            }
+                        });
                     });
-                });
+                } else {
+                    res.json({suceess: false});
+                }
             });
         });
 

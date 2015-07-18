@@ -10,7 +10,8 @@
     /* schema */
     var MealSchema = new Schema({
         name: String,
-        name_alt: String
+        name_alt: String,
+        order: Number
     });
 
     /* export */
