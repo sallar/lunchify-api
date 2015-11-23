@@ -149,7 +149,7 @@
 
                         var meal = new Meal({
                             name: m.name,
-                            name_alt: m.name_fi,
+                            english: m.english,
                             order: i++
                         });
 
@@ -176,7 +176,7 @@
 
     // START THE SERVER
     // =============================================================================
-    app.listen(8080);
+    app.listen(80);
     console.log('Magic happens');
 
 })();
