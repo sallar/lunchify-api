@@ -58,7 +58,7 @@
                                 coordinates: coords
                             },
                             $minDistance: 0,
-                            $maxDistance: 2000
+                            $maxDistance: 10000
                         }
                     }
                 };
