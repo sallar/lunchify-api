@@ -84,8 +84,10 @@
                 res.json({success: true});
             }
             else {
+                console.log("saving");
                 var venue = new Venue(req.body);
                 venue.save(function() {
+                    console.log(arguments);
                     res.json(venue);
                 });
             }
