@@ -11,9 +11,9 @@
     var VenueSchema = new Schema({
         address: String,
         location: {type: [Number], index: '2dsphere'},
-        link: String,
         name: String,
-        simple_name: String
+        provider_id: String,
+        provider: String
     });
 
     /* index */
