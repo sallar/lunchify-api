@@ -13,7 +13,8 @@
         location: {type: [Number], index: '2dsphere'},
         name: String,
         provider_id: String,
-        provider: String
+        provider: String,
+        city: String
     });
 
     /* index */
