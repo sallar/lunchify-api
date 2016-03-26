@@ -94,7 +94,7 @@
         });
 
     /* single venue */
-    router.route('/venues/:venue_id/:date?')
+    router.route('/venues/:venue_id/menu/:date?')
 
         /* get venues menu */
         .get(function(req, res) {
@@ -150,8 +150,9 @@
                     meals.forEach(function(m) {
 
                         var meal = new Meal({
-                            name: m.name,
-                            english: m.english,
+                            title: m.title,
+                            lang: m.lang,
+                            flags: m.flags,
                             order: i++
                         });
 
