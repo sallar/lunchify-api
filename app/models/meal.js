@@ -9,8 +9,9 @@
 
     /* schema */
     var MealSchema = new Schema({
-        name: String,
-        english: Boolean,
+        title: String,
+        lang: String,
+        flags: [String],
         order: Number
     });
 
