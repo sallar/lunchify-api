@@ -1,6 +1,7 @@
 {
     "name": "lunchify-api",
     "version": "1.0.0",
+    "main": "index.js",
     "dependencies": {
         "express": "^4.13.0",
         "mongoose": "^4.0.6",
