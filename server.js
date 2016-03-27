@@ -33,10 +33,6 @@ mongorito.connect('localhost/lunchify').then(() => {
         .get(Menu.find)
         .post(Menu.save);
 
-    // single menu
-    router.route('/menus/:menu_id')
-        .post(Menu.saveMeals);
-
     // all of our routes will be prefixed with /api
     app.use('/api', router);
     app.listen(8080);

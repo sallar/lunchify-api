@@ -20,7 +20,7 @@ export async function save(req, res) {
     let date = req.params.date ? new Date(req.params.date) : new Date();
     let menu = await Menu.findOne({
         venue_id: req.params.venue_id,
-        date: {date: {$gte: date, $lte: date}
+        date: {date: {$gte: date, $lte: date}}
     });
 
     if (menu) {
