@@ -2,24 +2,24 @@
     "use strict";
 
     var Meal = require('../models/meal'),
-        Menu = require('../models/menu');
+        Menu = require('../models/menu'),
+        Venue = require('../models/venue');
 
     module.exports = {
         find: function(req, res) {
-            // Calculate the date
-            var t = new Date(),
-                d = req.params.date || [t.getFullYear(), t.getMonth() + 1, t.getDate()].join('-');
+            var date = req.params.date ? new Date(req.params.date) : new Date();
 
             // Find the menu
             Menu.findOne({
                 _venue: req.params.venue_id,
-                date: {$gte: new Date(d), $lte: new Date(d)}
+                date: {$gte: date, $lte: date}
             })
                 .populate('_venue')
                 .populate({path: 'meals', options: {sort: {'order': 1}} })
                 .exec(function(err, menu) {
-                    if (err) {
-                        res.send(err);
+                    if (err || !menu) {
+                        res.sendStatus(404);
+                        return;
                     }
                     res.json(menu);
                 });
@@ -29,14 +29,29 @@
             var date = req.params.date ? new Date(req.params.date) : new Date();
 
             Venue.findOne({_id: req.params.venue_id}, function(err, venue) {
-                var menu = new Menu({
-                    date: date,
-                    _venue: venue
+                if (err || !venue) {
+                    res.sendStatus(404);
+                    return;
+                }
+
+                Menu.findOne({date: {$gte: date, $lte: date}}, function(err, existingMenu) {
+                    if (err) {
+                        res.sendStatus(500);
+                    }
+                    else if (!existingMenu) {
+                        var menu = new Menu({
+                            date: date,
+                            _venue: venue
+                        });
+
+                        menu.save(function() {
+                            res.json(menu);
+                        });
+                    } else {
+                        res.json(existingMenu);
+                    }
                 });
 
-                menu.save(function() {
-                    res.json(menu);
-                });
             });
         },
 
