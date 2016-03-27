@@ -35,7 +35,7 @@ mongorito.connect('localhost/lunchify').then(() => {
 
     // all of our routes will be prefixed with /api
     app.use('/api', router);
-    app.listen(8080);
+    app.listen(80);
 }).catch(err => {
     console.error(err);
 });
