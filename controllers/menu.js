@@ -16,23 +16,34 @@ export async function find(req, res) {
     res.json(menu.toJSON());
 }
 
-export async function save(req, res) {
-    let date = req.params.date ? new Date(req.params.date) : new Date();
+async function saveMenu(venueID, data) {
+    let date = new Date(data.date);
     let menu = await Menu.findOne({
-        venue_id: req.params.venue_id,
-        date: {date: {$gte: date, $lte: date}}
+        venue_id: venueID,
+        date: {$gte: date, $lte: date}
     });
 
-    if (menu) {
-        res.sendStatus(403);
-        return;
+    if (!menu) {
+        menu = new Menu(Object.assign({
+            venue_id: venueID,
+            date: date,
+            meals: data.menu
+        }));
+        await menu.save();
     }
 
-    let newMenu = new Menu(Object.assign({
-        venue_id: req.params.venue_id,
-        date: date
-    }, req.body));
+    return menu.toJSON();
+}
 
-    await newMenu.save();
-    res.json(newMenu.toJSON());
+export async function save(req, res) {
+    let body = req.body;
+
+    if (!Array.isArray(body)) {
+        body = [body];
+    }
+
+    let result = body.map(menu => saveMenu(req.params.venue_id, menu));
+    Promise.all(result).then(data => {
+        res.json(data);
+    })
 }
