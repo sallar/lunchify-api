@@ -2,19 +2,17 @@
  * @author Sallar Kaboli <sallar.kaboli@gmail.com>
  * @date 6/22/15.
  */
-(function() {
-    "use strict";
+import mongorito from "mongorito";
+import express from "express";
+import bodyParser from "body-parser";
 
-    var express    = require('express'),
-        bodyParser = require('body-parser'),
-        mongoose   = require('mongoose'),
-        Venues     = require('./controllers/venues'),
-        Menu       = require('./controllers/menu'),
-        app        = express(),
-        router     = express.Router();
+mongorito.connect('localhost/lunchify').then(() => {
+    const app = express();
+    const router = express.Router();
 
-    // Connect to Mongoose
-    mongoose.connect('mongodb://localhost/lunchify');
+    // Controllers
+    const Venues = require('./controllers/venues');
+    const Menu = require('./controllers/menu');
 
     // configure app to use bodyParser()
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,5 +40,6 @@
     // all of our routes will be prefixed with /api
     app.use('/api', router);
     app.listen(8080);
-
-})();
+}).catch(err => {
+    console.error(err);
+});
