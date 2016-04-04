@@ -1,0 +1,58 @@
+html, body {
+    font: 1em/1.618 "Open Sans";
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 300;
+    margin: 0;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64em;
+    height: 40em;
+    display: flex;
+}
+
+    .main figure {
+        margin: 0;
+        flex: 0 0 50%;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .main figure img {
+            height: 100%;
+            width: auto;
+        }
+
+    .main .content {
+        flex: 0 0 50%;
+        position: relative;
+    }
+
+        .main .content__inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-70%, -70%);
+        }
+
+        .main .content p {
+            margin: 1em 0 2em;
+        }
+
+            .main .content p .finland {
+                display: inline-block;
+                height: 1em;
+                width: auto;
+                vertical-align: -2px;
+            }

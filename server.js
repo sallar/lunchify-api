@@ -20,7 +20,7 @@ mongorito.connect('localhost/lunchify').then(() => {
 
     // home route
     router.get('/', function(req, res) {
-        res.json({ message: 'hooray! welcome to our api!' });
+        res.sendStatus(403);
     });
 
     // all venues
@@ -35,6 +35,7 @@ mongorito.connect('localhost/lunchify').then(() => {
 
     // all of our routes will be prefixed with /api
     app.use('/api', router);
+    app.use('/', express.static('./public'));
     app.listen(8080);
 }).catch(err => {
     console.error(err);
