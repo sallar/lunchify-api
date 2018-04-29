@@ -2,13 +2,9 @@
  * @author Sallar Kaboli <sallar.kaboli@gmail.com>
  * @date 6/22/15.
  */
-const mongorito = require("mongorito");
-const express = require("express");
-const bodyParser = require("body-parser");
-
-// Controllers
-const Venues = require("./controllers/venues");
-const Menu = require("./controllers/menu");
+import mongorito from "mongorito";
+import express from "express";
+import bodyParser from "body-parser";
 
 mongorito
     .connect("localhost/lunchify")
@@ -25,6 +21,10 @@ mongorito
             res.sendStatus(403);
         });
 
+        // Controllers
+        const Venues = require("./controllers/venues");
+        const Menu = require("./controllers/menu");
+
         // all venues
         router
             .route("/venues/:coords?")
@@ -39,7 +39,7 @@ mongorito
 
         // all of our routes will be prefixed with /api
         app.use("/api", router);
-        app.use("/", express.static("./public"));
+        app.use("/", express.static("../public"));
         app.listen(8080);
     })
     .catch(err => {

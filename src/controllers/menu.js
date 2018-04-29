@@ -1,5 +1,5 @@
-const Menu = require("../models/menu");
-const Venue = require("../models/venue");
+import Menu from "../models/menu";
+import Venue from "../models/venue";
 
 export async function find(req, res) {
     let date = req.params.date ? new Date(req.params.date) : new Date();

@@ -2,7 +2,7 @@
  * @author Sallar Kaboli <sallar.kaboli@gmail.com>
  * @date 6/22/15.
  */
-const { Model } = require("mongorito");
+import { Model } from "mongorito";
 
 class Venue extends Model {}
 

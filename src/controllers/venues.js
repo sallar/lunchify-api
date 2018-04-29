@@ -1,4 +1,4 @@
-const Venue = require("../models/venue");
+import Venue from "../models/venue";
 
 export async function findAll(req, res) {
     var condition = {},
