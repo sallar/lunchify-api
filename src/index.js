@@ -5,6 +5,7 @@
 import mongorito from "mongorito";
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
 
 mongorito
     .connect("localhost/lunchify")
@@ -39,7 +40,7 @@ mongorito
 
         // all of our routes will be prefixed with /api
         app.use("/api", router);
-        app.use("/", express.static("../public"));
+        app.use("/", express.static(path.resolve(__dirname, "../public")));
         app.listen(8080);
     })
     .catch(err => {
