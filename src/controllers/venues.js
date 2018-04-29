@@ -1,12 +1,12 @@
-import Venue from "../models/venue.js";
+import Venue from "../models/venue";
 
 export async function findAll(req, res) {
     var condition = {},
-        coords    = [];
+        coords = [];
 
     // If coords are set
-    if(req.params.coords) {
-        coords = req.params.coords.split(',');
+    if (req.params.coords) {
+        coords = req.params.coords.split(",");
         coords = coords.map(parseFloat);
         coords.reverse();
 
