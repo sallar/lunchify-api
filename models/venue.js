@@ -2,12 +2,10 @@
  * @author Sallar Kaboli <sallar.kaboli@gmail.com>
  * @date 6/22/15.
  */
-import {Model} from "mongorito";
+const { Model } = require("mongorito");
 
-class Venue extends Model {
+class Venue extends Model {}
 
-}
-
-Venue.index({location: '2dsphere'});
+Venue.index({ location: "2dsphere" });
 
 export default Venue;
